@@ -4,7 +4,8 @@ This is a Python-based demo that populates some Goal and Project nodes
 
 It follows **[The Map Spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXkVqc-jKegME8xDbsephDIKAGOl0g/edit#heading=h.rjp9y39k12t7)**, and leverages Ocean data NFTs.
 
-## 1. Setup
+# Setup
+
 ## Prerequisites
 
 -   Linux/MacOS
@@ -64,7 +65,7 @@ export ADDRESS_FILE=~/.ocean/ocean-contracts/artifacts/address.json
 export OCEAN_NETWORK_URL=http://127.0.0.1:8545
 ```
 
-## 2. Do the stuff
+# Quickstart Example
 
 Open a new console and:
 ```console
@@ -108,3 +109,16 @@ proj_pyscript.addInbound(goal_py_wasm)
 proj_pyscript.addOutbound(goal_py_browser)
 ```
 
+# Usage: Runnig Tests
+
+In terminal:
+```console
+#run tests for one method, with print statements to console. "-s" is to show output
+pytest test/test_themap.py::test1 -s
+
+#run tests for one module
+pytest test/test_themap.py
+
+#run all tests
+pytest
+```
