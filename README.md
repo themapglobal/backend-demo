@@ -9,7 +9,7 @@ It follows **[The Map Spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXk
 
 -   Linux/MacOS
 -   [Docker](https://docs.docker.com/engine/install/), [Docker Compose](https://docs.docker.com/compose/install/), [allowing non-root users](https://www.thegeekdiary.com/run-docker-as-a-non-root-user/)
--   Python 3.8.5+
+-   Python 3.8.5+, and `python3-dev`
 
 ## Run local chain & Ocean services
 
