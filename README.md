@@ -103,10 +103,5 @@ proj_y.addOutbound(goal_py_browser)
 proj_pyscript = f.newProject("Project: Pyscript", wallet)
 proj_pyscript.addInbound(goal_py_wasm)
 proj_pyscript.addOutbound(goal_py_browser)
-
-
-
-
-
 ```
 
