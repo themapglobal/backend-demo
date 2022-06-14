@@ -1,14 +1,14 @@
 from random import randint
-from ocean_lib.models.ERC721NFT import ERC721NFT
+from typing import List
+
+from enforce_typing import enforce_types
+
+from ocean_lib.models.erc721_nft import ERC721NFT
 
 INBOUND_KEY = "inbound_addrs"
 OUTBOUND_KEY = "outbound_addrs"
 
-def nodeAt(addr:str, web3) -> Node:
-    """@return -- Goal or Project data nft, for the given address"""
-    data_nft = ERC721NFT(self._ocean.web3, addr)
-    return Node(data_nft)
-
+@enforce_types
 class NodeFactory:
     def __init__(self, ocean, wallet):
         self._ocean = ocean
@@ -20,12 +20,13 @@ class NodeFactory:
 
     def newProject(name:str):
         symbol = f"PROJ{randint(0,9999)}"
-        return self._newNode(symbol, name, ocean, wallet)
+        return self._newNode(symbol, name)
 
     def _newNode(symbol:str, name:str):
         data_nft = self._ocean.create_erc721_nft(symbol, name, self._wallet)
         return Node(data_nft, self._ocean)
 
+@enforce_types
 class Node:
     def __init__(self, data_nft, ocean):
         self._ocean = ocean
@@ -91,3 +92,9 @@ class Node:
         value2 = value2_hex.decode('ascii')
 
         return value2
+
+@enforce_types
+def nodeAt(addr:str, web3) -> Node:
+    """@return -- Goal or Project data nft, for the given address"""
+    data_nft = ERC721NFT(self._ocean.web3, addr)
+    return Node(data_nft)

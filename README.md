@@ -29,7 +29,7 @@ docker system prune -a --volumes
 ./start_ocean.sh
 ```
 
-## Install Ocean library
+## Install dependencies, including ocean.py
 
 In a new console:
 
@@ -47,6 +47,9 @@ pip3 install wheel
 
 # Install Ocean library. Allow pre-releases to get the latest v4 version.
 pip3 install --pre ocean-lib
+
+# Install other dependencies
+pip install -r requirements.txt
 ```
 
 ## Set envvars
