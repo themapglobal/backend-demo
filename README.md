@@ -11,9 +11,9 @@ It follows **[The Map Spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXk
 -   [Docker](https://docs.docker.com/engine/install/), [Docker Compose](https://docs.docker.com/compose/install/), [allowing non-root users](https://www.thegeekdiary.com/run-docker-as-a-non-root-user/)
 -   Python 3.8.5+
 
-## Download Ocean barge and run services
+## Run local chain & Ocean services
 
-Ocean `barge` runs ganache (local blockchain), Provider (data service), and Aquarius (metadata cache).
+Ocean `barge` runs Ganache (local blockchain), Provider (data service), and Aquarius (metadata cache).
 
 In a new console:
 
@@ -25,11 +25,11 @@ cd barge
 # Clean up old containers (to be sure)
 docker system prune -a --volumes
 
-# Run barge: start Ganache, Provider, Aquarius; deploy contracts; update ~/.ocean
+# Start barge; deploy contracts; update ~/.ocean
 ./start_ocean.sh
 ```
 
-## Install ocean.py (ocean-lib)
+## Install Ocean library
 
 In a new console:
 
