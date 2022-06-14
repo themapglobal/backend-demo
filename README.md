@@ -1,6 +1,8 @@
 # The Map: Backend Demo
 
-Use this README for a Python-based approach to populate a set of Goal and Project nodes, according to [The Map Software Spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXkVqc-jKegME8xDbsephDIKAGOl0g/edit#heading=h.rjp9y39k12t7)
+This is a Python-based demo that populates some Goal and Project nodes
+
+It follows **[The Map Spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXkVqc-jKegME8xDbsephDIKAGOl0g/edit#heading=h.rjp9y39k12t7)**, and leverages Ocean data NFTs.
 
 ## 1. Setup
 ## Prerequisites
@@ -9,7 +11,7 @@ Use this README for a Python-based approach to populate a set of Goal and Projec
 -   [Docker](https://docs.docker.com/engine/install/), [Docker Compose](https://docs.docker.com/compose/install/), [allowing non-root users](https://www.thegeekdiary.com/run-docker-as-a-non-root-user/)
 -   Python 3.8.5+
 
-## Download barge and run services
+## Download Ocean barge and run services
 
 Ocean `barge` runs ganache (local blockchain), Provider (data service), and Aquarius (metadata cache).
 
@@ -27,7 +29,7 @@ docker system prune -a --volumes
 ./start_ocean.sh
 ```
 
-## Install the library from v4 sources
+## Install ocean.py (ocean-lib)
 
 In a new console:
 
@@ -59,7 +61,7 @@ export ADDRESS_FILE=~/.ocean/ocean-contracts/artifacts/address.json
 export OCEAN_NETWORK_URL=http://127.0.0.1:8545
 ```
 
-## 2. Publish Data NFTs for The Map
+## 2. Publish Data NFT
 
 Open a new console and run python console with the command:
 ```console
@@ -82,8 +84,33 @@ alice_private_key = os.getenv('TEST_PRIVATE_KEY1')
 alice_wallet = Wallet(ocean.web3, alice_private_key, config.block_confirmations, config.transaction_timeout)
 
 # Publish a first data NFT
-data_nft = ocean.create_data_nft('NFTToken1', 'NFT1', alice_wallet)
+data_nft = ocean.create_data_nft('NFT1', 'NFT1', alice_wallet)
 print(f"Created data NFT. Its address is {data_nft.address}")
 ```
 
-FIXME: have >1 data NFTs, and fill in key-value pairs
+## 3. Add key-value pair to data NFT
+
+```python
+# Key-value pair
+key = "fav_color"
+value = "blue"
+
+# prep key for setter
+key_hash = ocean.web3.keccak(text=key)  # Contract/ERC725 requires keccak256 hash
+
+# prep value for setter
+value_hex = value.encode('utf-8').hex()  # set_new_data() needs hex
+
+# set
+data_nft.set_new_data(key_hash, value_hex, alice_wallet)
+```
+
+## 4. Retrieve value from data NFT
+
+```python
+value2_hex = data_nft.get_data(key_hash)
+value2 = value2_hex.decode('ascii')
+print(f"Found that {key} = {value2}")
+```
+
+Under the hood, it uses [ERC725](https://erc725alliance.org/), which augments ERC721 with a well-defined way to set and get key-value pairs.
