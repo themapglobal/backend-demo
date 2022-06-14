@@ -63,7 +63,7 @@ export OCEAN_NETWORK_URL=http://127.0.0.1:8545
 
 ## 2. Publish Data NFT
 
-Open a new console and run python console with the command:
+Open a new console and:
 ```console
 python
 ```
@@ -83,7 +83,7 @@ from ocean_lib.web3_internal.wallet import Wallet
 alice_private_key = os.getenv('TEST_PRIVATE_KEY1')
 alice_wallet = Wallet(ocean.web3, alice_private_key, config.block_confirmations, config.transaction_timeout)
 
-# Publish a first data NFT
+# Publish a data NFT
 data_nft = ocean.create_data_nft('NFT1', 'NFT1', alice_wallet)
 print(f"Created data NFT. Its address is {data_nft.address}")
 ```
