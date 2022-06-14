@@ -61,7 +61,7 @@ export ADDRESS_FILE=~/.ocean/ocean-contracts/artifacts/address.json
 export OCEAN_NETWORK_URL=http://127.0.0.1:8545
 ```
 
-## 2. Publish Data NFT
+## 2. Do the stuff
 
 Open a new console and:
 ```console
@@ -80,37 +80,33 @@ ocean = Ocean(config)
 # Create Alice's wallet
 import os
 from ocean_lib.web3_internal.wallet import Wallet
-alice_private_key = os.getenv('TEST_PRIVATE_KEY1')
-alice_wallet = Wallet(ocean.web3, alice_private_key, config.block_confirmations, config.transaction_timeout)
+private_key = os.getenv('TEST_PRIVATE_KEY1')
+wallet = Wallet(ocean.web3, private_key, config.block_confirmations, config.transaction_timeout)
 
-# Publish a data NFT
-data_nft = ocean.create_erc721_nft('NFT1', 'NFT1', alice_wallet)
-print(f"Created data NFT. Its address is {data_nft.address}")
+# Create a goal
+from themap import NodeFactory, nodeAt
+web3 = ocean.web3
+
+f = NodeFactory(ocean, wallet)
+
+goal_py_wasm = f.newGoal("Py run on WASM")
+goal_py_browser = f.newGoal("Py run in browser")
+
+goal_py_browser.addInbound(goal_py_wasm)
+
+proj_x = f.newProject("Proj: X", wallet)
+proj_x.addOutbound(goal_py_browser)
+
+proj_y = f.newProject("Proj: Y", wallet)
+proj_y.addOutbound(goal_py_browser)
+
+proj_pyscript = f.newProject("Project: Pyscript", wallet)
+proj_pyscript.addInbound(goal_py_wasm)
+proj_pyscript.addOutbound(goal_py_browser)
+
+
+
+
+
 ```
 
-## 3. Add key-value pair to data NFT
-
-```python
-# Key-value pair
-key = "fav_color"
-value = "blue"
-
-# prep key for setter
-key_hash = ocean.web3.keccak(text=key)  # Contract/ERC725 requires keccak256 hash
-
-# prep value for setter
-value_hex = value.encode('utf-8').hex()  # set_new_data() needs hex
-
-# set
-data_nft.set_new_data(key_hash, value_hex, alice_wallet)
-```
-
-## 4. Retrieve value from data NFT
-
-```python
-value2_hex = data_nft.get_data(key_hash)
-value2 = value2_hex.decode('ascii')
-print(f"Found that {key} = {value2}")
-```
-
-Under the hood, it uses [ERC725](https://erc725alliance.org/), which augments ERC721 with a well-defined way to set and get key-value pairs.
