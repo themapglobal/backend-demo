@@ -2,7 +2,9 @@
 
 This is a Python-based demo that populates some Goal and Project nodes
 
-It follows **[The Map Spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXkVqc-jKegME8xDbsephDIKAGOl0g/edit#heading=h.rjp9y39k12t7)**, and leverages Ocean data NFTs.
+It follows **[The Map software spec](https://docs.google.com/document/d/1yS5EBGSbyfGnAQXkVqc-jKegME8xDbsephDIKAGOl0g/edit#heading=h.rjp9y39k12t7)**, and leverages Ocean data NFTs.
+
+It uses a precise data model, that has been added to the sw spec.
 
 # Setup
 
