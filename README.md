@@ -72,7 +72,7 @@ Open a new console and:
 python
 ```
 
-Open [themap_test.py](./themap_test.py) in a separate browser window. Then to play, copy and paste code from it into the console.
+Open [test_themap.py](test_themap.py) in a separate browser window. Then to play, copy and paste code from it into the console.
 
 # Usage: Running Tests
 
