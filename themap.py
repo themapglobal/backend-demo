@@ -10,28 +10,33 @@ OUTBOUND_KEY = "outbound_addrs"
 
 @enforce_types
 class NodeFactory:
-    def __init__(self, ocean, wallet):
+    def __init__(self, ocean):
         self._ocean = ocean
-        self._wallet = wallet
     
-    def newGoal(self, name:str):
+    def newGoal(self, name:str, wallet):
         symbol = f"GOAL{randint(0,9999)}"
-        return self._newNode(symbol, name)
+        return self._newNode(symbol, name, wallet)
 
-    def newProject(name:str):
+    def newProject(self, name:str, wallet):
         symbol = f"PROJ{randint(0,9999)}"
-        return self._newNode(symbol, name)
+        return self._newNode(symbol, name, wallet)
 
-    def _newNode(symbol:str, name:str):
-        data_nft = self._ocean.create_erc721_nft(symbol, name, self._wallet)
-        return Node(data_nft, self._ocean)
+    def _newNode(self, symbol:str, name:str, wallet):
+        data_nft = self._ocean.create_erc721_nft(symbol, name, wallet)
+        node = Node(data_nft, self._ocean)
+        node.setData(INBOUND_KEY, " ", wallet)
+        node.setData(OUTBOUND_KEY, " ", wallet)
+        return node
 
 @enforce_types
 class Node:
     def __init__(self, data_nft, ocean):
+        self.data_nft = data_nft
         self._ocean = ocean
-        self._setData(INBOUND_KEY, " ")
-        self._setData(OUTBOUND_KEY, " ") # typically just Projects
+
+    @property
+    def address(self) -> str:
+        return self.data_nft.address
 
     #==== inbounds
     def getInboundNodes(self) -> List[str]:
@@ -44,7 +49,7 @@ class Node:
         self.addInboundAddr(node.address, wallet)
         
     def addInboundAddr(self, node_address:str, wallet):
-        self._addAddr(INBOUND_KEY, node_address)
+        self._addAddr(INBOUND_KEY, node_address, wallet)
         
     #==== outbounds
     def getOutboundNodes(self) -> List[str]:
@@ -57,21 +62,21 @@ class Node:
         self.addOutboundAddr(node.address, wallet)
 
     def addOutboundAddr(self, node_address:str, wallet):
-        self._addAddr(OUTBOUND_KEY)
+        self._addAddr(OUTBOUND_KEY, node_address, wallet)
         
     #==== helpers
     def _getNodes(self, key:str) -> List[str]:
         return [nodeAt(addr, self._ocean.web3) for addr in self._getAddrs(key)]
         
     def _getAddrs(self, key:str) -> List[str]:
-        return self._getData(key).split()
+        return self.getData(key).split()
 
-    def addAddr(self, key:str, address:str, wallet):
-        s = self._getData(key)
+    def _addAddr(self, key:str, address:str, wallet):
+        s = self.getData(key)
         assert address not in s
-        self._setData(key, f"{s} {address}", wallet) 
+        self.setData(key, f"{s} {address}", wallet) 
 
-    def _setData(self, key:str, value:str, wallet):
+    def setData(self, key:str, value:str, wallet):
         # condition the key. ERC725 requires keccak256 hash
         key_hash = self._ocean.web3.keccak(text=key)  
 
@@ -81,7 +86,7 @@ class Node:
         # actual work
         self.data_nft.set_new_data(key_hash, value_hex, wallet)
 
-    def _getData(self, key:str) -> str:
+    def getData(self, key:str) -> str:
         # condition the key
         key_hash = self._ocean.web3.keccak(text=key)
 

@@ -20,19 +20,19 @@ def test1():
     # Create a goal
     web3 = ocean.web3
 
-    f = NodeFactory(ocean, wallet)
+    f = NodeFactory(ocean)
 
-    goal_py_wasm = f.newGoal("Py run on WASM")
-    goal_py_browser = f.newGoal("Py run in browser")
+    goal_py_wasm = f.newGoal("Py run on WASM", wallet)
+    goal_py_browser = f.newGoal("Py run in browser", wallet)
 
-    goal_py_browser.addInbound(goal_py_wasm)
+    goal_py_browser.addInboundNode(goal_py_wasm, wallet)
 
     proj_x = f.newProject("Proj: X", wallet)
-    proj_x.addOutbound(goal_py_browser)
+    proj_x.addOutboundNode(goal_py_browser, wallet)
 
     proj_y = f.newProject("Proj: Y", wallet)
-    proj_y.addOutbound(goal_py_browser)
+    proj_y.addOutboundNode(goal_py_browser, wallet)
 
     proj_pyscript = f.newProject("Project: Pyscript", wallet)
-    proj_pyscript.addInbound(goal_py_wasm)
-    proj_pyscript.addOutbound(goal_py_browser)
+    proj_pyscript.addInboundNode(goal_py_wasm, wallet)
+    proj_pyscript.addOutboundNode(goal_py_browser, wallet)
