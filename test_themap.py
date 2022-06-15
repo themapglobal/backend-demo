@@ -21,8 +21,8 @@ def test1():
     f = NodeFactory(ocean)
 
     goal_py_wasm = f.newGoal("Py run on WASM", wallet)
+    
     goal_py_browser = f.newGoal("Py run in browser", wallet)
-
     goal_py_browser.addInboundNode(goal_py_wasm, wallet)
 
     proj_x = f.newProject("Proj: X", wallet)
