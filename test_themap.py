@@ -5,7 +5,7 @@ from ocean_lib.example_config import ExampleConfig
 from ocean_lib.ocean.ocean import Ocean
 from ocean_lib.web3_internal.wallet import Wallet
 
-from .themap import NodeFactory, nodeAt
+from themap import NodeFactory, nodeAt
 
 @enforce_types
 def test1():
