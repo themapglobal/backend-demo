@@ -23,16 +23,16 @@ class NodeFactory:
 
     def _newNode(self, symbol:str, name:str, wallet):
         data_nft = self._ocean.create_erc721_nft(symbol, name, wallet)
-        node = Node(data_nft, self._ocean)
+        node = Node(data_nft)
         node.setData(INBOUND_KEY, " ", wallet)
         node.setData(OUTBOUND_KEY, " ", wallet)
         return node
 
 @enforce_types
 class Node:
-    def __init__(self, data_nft, ocean):
+    def __init__(self, data_nft):
         self.data_nft = data_nft
-        self._ocean = ocean
+        self.web3 = data_nft.web3
 
     @property
     def address(self) -> str:
@@ -66,7 +66,7 @@ class Node:
         
     #==== helpers
     def _getNodes(self, key:str) -> List[str]:
-        return [nodeAt(addr, self._ocean.web3) for addr in self._getAddrs(key)]
+        return [nodeAt(addr, self.web3) for addr in self._getAddrs(key)]
         
     def _getAddrs(self, key:str) -> List[str]:
         return self.getData(key).split()
@@ -78,7 +78,7 @@ class Node:
 
     def setData(self, key:str, value:str, wallet):
         # condition the key. ERC725 requires keccak256 hash
-        key_hash = self._ocean.web3.keccak(text=key)  
+        key_hash = self.web3.keccak(text=key)  
 
         # condition the value. set_new_data() needs hex
         value_hex = value.encode('utf-8').hex()
@@ -88,7 +88,7 @@ class Node:
 
     def getData(self, key:str) -> str:
         # condition the key
-        key_hash = self._ocean.web3.keccak(text=key)
+        key_hash = self.web3.keccak(text=key)
 
         # get the returned value
         value2_hex = self.data_nft.get_data(key_hash)
@@ -101,5 +101,5 @@ class Node:
 @enforce_types
 def nodeAt(addr:str, web3) -> Node:
     """@return -- Goal or Project data nft, for the given address"""
-    data_nft = ERC721NFT(self._ocean.web3, addr)
+    data_nft = ERC721NFT(web3, addr)
     return Node(data_nft)
