@@ -17,7 +17,7 @@ def test1():
     private_key = os.getenv('TEST_PRIVATE_KEY1')
     wallet = Wallet(ocean.web3, private_key, config.block_confirmations, config.transaction_timeout)
 
-    # Create a goal
+    # Create goals
     f = NodeFactory(ocean)
 
     goal_py_wasm = f.newGoal("Py run on WASM", wallet)
