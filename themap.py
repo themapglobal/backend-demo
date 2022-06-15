@@ -23,20 +23,17 @@ class NodeFactory:
 
     def _newNode(self, symbol:str, name:str, wallet):
         data_nft = self._ocean.create_erc721_nft(symbol, name, wallet)
-        node = Node(data_nft)
+        node = Node()
+        #https://stackoverflow.com/questions/60920784/python-how-to-convert-an-existing-parent-class-object-to-child-class-object
+        node.__dict__.update(data_nft.__dict__)
         node.setData(INBOUND_KEY, " ", wallet)
         node.setData(OUTBOUND_KEY, " ", wallet)
         return node
 
 @enforce_types
-class Node:
-    def __init__(self, data_nft):
-        self.data_nft = data_nft
-        self.web3 = data_nft.web3
-
-    @property
-    def address(self) -> str:
-        return self.data_nft.address
+class Node(ERC721NFT):
+    def __init__(self):
+        pass
 
     #==== inbounds
     def getInboundNodes(self) -> List[str]:
@@ -84,14 +81,14 @@ class Node:
         value_hex = value.encode('utf-8').hex()
 
         # actual work
-        self.data_nft.set_new_data(key_hash, value_hex, wallet)
+        self.set_new_data(key_hash, value_hex, wallet)
 
     def getData(self, key:str) -> str:
         # condition the key
         key_hash = self.web3.keccak(text=key)
 
         # get the returned value
-        value2_hex = self.data_nft.get_data(key_hash)
+        value2_hex = self.get_data(key_hash)
 
         # condition the returned value
         value2 = value2_hex.decode('ascii')
