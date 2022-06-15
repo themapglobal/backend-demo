@@ -114,10 +114,10 @@ proj_pyscript.addOutbound(goal_py_browser)
 In terminal:
 ```console
 #run tests for one method, with print statements to console. "-s" is to show output
-pytest test/test_themap.py::test1 -s
+pytest test_themap.py::test1 -s
 
 #run tests for one module
-pytest test/test_themap.py
+pytest test_themap.py
 
 #run all tests
 pytest
