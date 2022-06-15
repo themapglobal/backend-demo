@@ -65,15 +65,6 @@ export ADDRESS_FILE=~/.ocean/ocean-contracts/artifacts/address.json
 export OCEAN_NETWORK_URL=http://127.0.0.1:8545
 ```
 
-# Quickstart Example
-
-Open a new console and:
-```console
-python
-```
-
-Open [test_themap.py](test_themap.py) in a separate browser window. Then to play, copy and paste code from it into the console.
-
 # Usage: Running Tests
 
 In terminal:
@@ -87,3 +78,13 @@ pytest test_themap.py
 #run all tests
 pytest
 ```
+
+# Usage: Playing
+
+Open a new console and:
+```console
+python
+```
+
+Open [test_themap.py](test_themap.py) in a separate browser window. Then to play, copy and paste code from it into the console.
+
