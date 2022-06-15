@@ -74,7 +74,7 @@ python
 
 Open [themap_test.py](./themap_test.py) in a separate browser window. Then to play, copy and paste code from it into the console.
 
-# Usage: Runnig Tests
+# Usage: Running Tests
 
 In terminal:
 ```console
