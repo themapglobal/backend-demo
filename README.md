@@ -1,4 +1,4 @@
-# The Map: Backend Demo
+# The Map: Backend Demo Leveraging ocean.py
 
 This is a Python-based demo that populates some Goal and Project nodes
 
